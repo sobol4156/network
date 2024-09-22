@@ -15,7 +15,7 @@
       <main style="width: 100%;">
         <router-view v-slot="{ Component }">
           <keep-alive>
-            <component :is="Component" />
+            <component class="app__component" :is="Component" />
           </keep-alive>
         </router-view>
       </main>
@@ -53,6 +53,10 @@ aside {
 .app{
   padding: 0 70px;
   width: 100%;
+
+  &__component{
+    height: 100%;
+  }
 }
 .content-app {
   backdrop-filter: blur(15px);

@@ -36,14 +36,19 @@ import PlusIcon from "@/components/ui/PlusIcon.vue";
     border: none;
     font-size: 18px;
     padding: 0 10px;
+
+    &:focus::placeholder {
+      color: transparent;
+    }
   }
 
   &__icon {
     cursor: pointer;
+    
   }
   &__plus-icon {
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: auto;
   }
 }
 </style>
