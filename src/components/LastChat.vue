@@ -36,6 +36,7 @@ const props = defineProps({
   display: flex;
   position: relative;
   padding: 20px;
+  cursor: pointer;
   &::after {
     position: absolute;
     content: "";
@@ -48,6 +49,7 @@ const props = defineProps({
 
   &__avatar {
     border-radius: 50%;
+    object-fit: cover;
   }
 
   &__text {

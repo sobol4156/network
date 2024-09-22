@@ -20,9 +20,9 @@ import PlusIcon from "@/components/ui/PlusIcon.vue";
   padding: 15px 20px;
   display: flex;
   align-items: center;
-position: relative;
-  &::after{
-    content: '';
+  position: relative;
+  &::after {
+    content: "";
     position: absolute;
     right: 0;
     bottom: 0;
@@ -30,7 +30,7 @@ position: relative;
     width: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
   }
-  
+
   &__input {
     background: transparent;
     border: none;

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <list-chats />
+    <content-chats />
   </div>
 </template>
 
 <script setup>
-import ListChats from "@/components/listChats/ListChats.vue";
+import ContentChats from "@/components/ContentChats.vue";
 </script>
 
 <style scoped></style>

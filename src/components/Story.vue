@@ -2,7 +2,7 @@
   <div class="story story--add">
     <div class="story__avatar">
       <div v-if="props.myStory" class="story__add-icon">+</div>
-      <img v-else :src="props.user.img" alt="Add Story" />
+      <img v-else :src="props.user.img" alt="Story"  />
     </div>
     <span v-if="props.myStory">My Story</span>
     <span v-else>{{ props.user.name }}</span>

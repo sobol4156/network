@@ -1,23 +1,25 @@
 <template>
   <div class="app">
-    <aside>
-      <div class="logo">
-        <logo-icon />
-      </div>
-      <div class="menu">
-        <friends-icon class="menu__item" />
-        <call-icon class="menu__item" />
-        <messages-icon class="menu__item" />
-        <settings-icon class="menu__item" />
-      </div>
-    </aside>
-    <main>
-      <router-view v-slot="{ Component }">
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
-      </router-view>
-    </main>
+    <div class="content-app">
+      <aside>
+        <div class="logo">
+          <logo-icon />
+        </div>
+        <div class="menu">
+          <friends-icon class="menu__item" />
+          <call-icon class="menu__item" />
+          <messages-icon class="menu__item" />
+          <settings-icon class="menu__item" />
+        </div>
+      </aside>
+      <main style="width: 100%;">
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+      </main>
+    </div>
   </div>
 </template>
 
@@ -48,12 +50,17 @@ aside {
     background: linear-gradient(to left, rgba(0, 0, 0, 0.3), transparent);
   }
 }
-.app {
+.app{
+  padding: 0 70px;
+  width: 100%;
+}
+.content-app {
   backdrop-filter: blur(15px);
   border-radius: 20px;
   border: 1px solid black;
   height: 650px;
   display: flex;
+  width: 100%;
 }
 .menu {
   display: flex;
