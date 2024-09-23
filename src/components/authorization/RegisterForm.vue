@@ -1,13 +1,15 @@
 <template>
-  <div class="login-form">
+  <div class="register-form">
     <form class="data-form">
+      <label for="">Name:</label>
+      <auth-input />
       <label for="">Email:</label>
       <auth-input />
       <label for="">Password:</label>
       <auth-input />
     </form>
-    <auth-button>Login</auth-button>
-    <router-link class="login-form__link" to="/register"><span >Нет учетной записи?</span></router-link>
+    <auth-button>Register</auth-button>
+    <router-link class="register-form__link"  to="/login"><span>Уже есть учетная запись?</span></router-link>
   </div>
 </template>
 
@@ -15,9 +17,10 @@
 import AuthInput from "../AuthInput.vue";
 import AuthButton from "../AuthButton.vue";
 import { RouterLink } from "vue-router";
+
 </script>
 <style scoped lang="scss">
-.login-form {
+.register-form {
   display: flex;
   justify-content: center;
   height: 100%;
