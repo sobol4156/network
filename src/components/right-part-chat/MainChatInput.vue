@@ -5,6 +5,8 @@
       class="chat-footer__input"
       type="text"
       placeholder="Write a message..."
+      v-model="inputMessage"
+      @keyup.enter="sendMessage"
     />
     <sticker-icon class="chat-footer__sticker" />
     <microphone-icon class="chat-footer__microphone" />
@@ -15,6 +17,49 @@
 import MicrophoneIcon from "@/components/ui/MicrophoneIcon.vue";
 import PaperClipIcon from "@/components/ui/PaperClipIcon.vue";
 import StickerIcon from "@/components/ui/StickerIcon.vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
+let socket: WebSocket; // WebSocket объект
+const inputMessage = ref("");
+// Функция для отправки сообщений
+const sendMessage = () => {
+  if (inputMessage.value) {
+    socket.send(inputMessage.value); // Отправляем сообщение на сервер
+    inputMessage.value = ""; // Очищаем поле ввода
+  }
+};
+
+// Функция для подключения к WebSocket
+const connectWebSocket = () => {
+  // Указываем URL WebSocket-сервера
+  socket = new WebSocket("ws://localhost:8080");
+
+  // Обработчик открытия соединения
+  socket.onopen = () => {
+    console.log("Connected to WebSocket server");
+  };
+
+  // Обработчик закрытия соединения
+  socket.onclose = () => {
+    console.log("WebSocket connection closed");
+  };
+
+  // Обработчик ошибки
+  socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+  };
+};
+
+onMounted(() => {
+  connectWebSocket();
+});
+
+// Перед размонтированием компонента закрываем соединение
+onBeforeUnmount(() => {
+  if (socket) {
+    socket.close();
+  }
+});
 </script>
 
 <style scoped lang="scss">

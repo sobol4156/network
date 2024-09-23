@@ -8,7 +8,7 @@
     </div>
     <div class="right-part">
       <profile-header :right-part="true"/>
-      <main-chat/>
+      <main-chat class="right-part__main-chat"/>
       <main-chat-input class="right-part__input"/>
     </div>
   </div>
@@ -46,6 +46,12 @@ import MainChatInput from "@/components/right-part-chat/MainChatInput.vue";
     background: linear-gradient(to right, rgba(0, 0, 0, 0.3), transparent);
   }
 
-
+&__main-chat{
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
 }
 </style>
