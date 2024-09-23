@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="content-app">
-      <aside>
+      <aside v-if="false">
         <div class="logo">
           <logo-icon />
         </div>
@@ -12,23 +12,39 @@
           <settings-icon class="menu__item" />
         </div>
       </aside>
-      <main style="width: 100%;">
+      <main v-if="false" style="width: 100%">
         <router-view v-slot="{ Component }">
           <keep-alive>
             <component class="app__component" :is="Component" />
           </keep-alive>
         </router-view>
       </main>
+      <div v-if="true" class="authorization">
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {onMounted} from 'vue'
+import { useRouter } from "vue-router";
 import LogoIcon from "@/components/ui/LogoIcon.vue";
 import FriendsIcon from "@/components/ui/FriendsIcon.vue";
 import CallIcon from "@/components/ui/CallIcon.vue";
 import MessagesIcon from "@/components/ui/MessagesIcon.vue";
 import SettingsIcon from "@/components/ui/SettingsIcon.vue";
+
+
+const router = useRouter();
+
+onMounted(() => {
+  router.push("/login");
+});
 </script>
 
 <style scoped lang="scss">
@@ -50,13 +66,16 @@ aside {
     background: linear-gradient(to left, rgba(0, 0, 0, 0.3), transparent);
   }
 }
-.app{
+.app {
   padding: 0 70px;
   width: 100%;
 
-  &__component{
+  &__component {
     height: 100%;
   }
+}
+.authorization{
+  width: 100%;
 }
 .content-app {
   backdrop-filter: blur(15px);
