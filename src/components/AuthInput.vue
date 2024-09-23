@@ -1,6 +1,32 @@
 <template>
-  <input class="auth-input" />
+  <input
+    class="auth-input"
+    :type="type"
+    :value="modelValue"
+    @input="onInput"
+  />
 </template>
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
+
+const props = defineProps<{
+  modelValue: string;
+  type?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string): void;
+}>();
+
+const onInput = (event: Event) => {
+  const target = event.target as HTMLInputElement | null;
+  
+  if (target) {
+    emit('update:modelValue', target.value);
+  }
+};
+</script>
 
 <style scoped lang="scss">
 input {
