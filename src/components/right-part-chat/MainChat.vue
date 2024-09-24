@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
 
 const messages = ref([]);
 const messagesContainer = ref(null);
@@ -69,15 +69,16 @@ onBeforeUnmount(() => {
   }
 });
 
-const scrollToBottom = () => {
+const scrollToBottom = async() => {
   if (messagesContainer.value) {
+    await nextTick()
     messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
   }
 };
 
-// Следим за изменениями в сообщениях и прокручиваем вниз
+
 watch(
-  () => messages,
+  () => messages.value.length,
   () => {
     console.log(123);
     scrollToBottom();
