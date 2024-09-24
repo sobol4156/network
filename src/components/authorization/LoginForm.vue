@@ -2,19 +2,44 @@
   <div class="login-form">
     <form class="data-form">
       <label for="">Email:</label>
-      <auth-input />
+      <auth-input v-model="email" />
       <label for="">Password:</label>
-      <auth-input />
+      <auth-input v-model="password" />
     </form>
-    <auth-button>Login</auth-button>
-    <router-link class="login-form__link" to="/register"><span >Нет учетной записи?</span></router-link>
+    <auth-button @click.prevent="sendData">Login</auth-button>
+    <router-link class="login-form__link" to="/register"
+      ><span>Нет учетной записи?</span></router-link
+    >
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import AuthInput from "../AuthInput.vue";
 import AuthButton from "../AuthButton.vue";
 import { RouterLink } from "vue-router";
+import { API_POST } from "@/api";
+import { useStore } from "@/stores";
+import { useRouter } from "vue-router";
+
+const store = useStore();
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+
+const sendData = async() =>{
+ const loginData = {
+    email: email.value,
+    password: password.value
+  }
+
+ const response = await API_POST('/auth/login', loginData)
+
+ if(response.data.success){
+  store.changeAuthorization(true)
+  router.push('/messages')
+ }
+}
 </script>
 <style scoped lang="scss">
 .login-form {
@@ -24,7 +49,7 @@ import { RouterLink } from "vue-router";
   align-items: center;
   flex-direction: column;
 
-  &__link{
+  &__link {
     margin-top: 10px;
     text-decoration: none;
     color: beige;

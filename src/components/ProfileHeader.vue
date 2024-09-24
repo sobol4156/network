@@ -9,7 +9,7 @@
     />
 
     <div class="profile-header__user">
-      <span class="profile-header__user-name">Alex Sobol</span>
+      <span class="profile-header__user-name">{{ store.user.name }}</span>
       <span class="profile-header__user-post">FullStack Developer</span>
     </div>
 
@@ -29,6 +29,9 @@
 
 <script setup lang="ts">
 import SearchIcon from "@/components/ui/SearchIcon.vue";
+import { useStore } from "@/stores";
+
+const store = useStore()
 
 const props = defineProps({
   rightPart: Boolean,

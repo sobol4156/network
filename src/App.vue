@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="content-app">
-      <aside v-if="false">
+      <aside v-if="store.isAuthorization">
         <div class="logo">
           <logo-icon />
         </div>
@@ -12,14 +12,14 @@
           <settings-icon class="menu__item" />
         </div>
       </aside>
-      <main v-if="false" style="width: 100%">
+      <main v-if="!store.isAuthorization" style="width: 100%">
         <router-view v-slot="{ Component }">
           <keep-alive>
             <component class="app__component" :is="Component" />
           </keep-alive>
         </router-view>
       </main>
-      <div v-if="true" class="authorization">
+      <div v-if="store.isAuthorization" class="authorization">
         <router-view v-slot="{ Component }">
           <keep-alive>
             <component :is="Component" />
@@ -31,16 +31,19 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted} from 'vue'
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "./stores";
 import LogoIcon from "@/components/ui/LogoIcon.vue";
 import FriendsIcon from "@/components/ui/FriendsIcon.vue";
 import CallIcon from "@/components/ui/CallIcon.vue";
 import MessagesIcon from "@/components/ui/MessagesIcon.vue";
 import SettingsIcon from "@/components/ui/SettingsIcon.vue";
 
-
+const store = useStore();
 const router = useRouter();
+const isAuthorization = ref(store.isAuthorization);
+
 
 onMounted(() => {
   router.push("/login");
@@ -74,7 +77,7 @@ aside {
     height: 100%;
   }
 }
-.authorization{
+.authorization {
   width: 100%;
 }
 .content-app {
