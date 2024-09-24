@@ -2,7 +2,7 @@
   <div class="chat-container">
     <div class="messages" ref="messagesContainer">
       <div v-for="(message, index) in messages" :key="index" class="message">
-        {{ message }}
+        {{ message.content }}
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@ let socket; // WebSocket объект
 // Функция для подключения к WebSocket
 const connectWebSocket = () => {
   // Указываем URL WebSocket-сервера
-  socket = new WebSocket("ws://localhost:8080");
+  socket = new WebSocket("ws://localhost:4000");
 
   // Обработчик открытия соединения
   socket.onopen = () => {
@@ -27,7 +27,9 @@ const connectWebSocket = () => {
 
   // Обработчик получения сообщения
   socket.onmessage = (event) => {
-    messages.value.push(event.data);
+    const newMessage = JSON.parse(event.data);
+    messages.value.push(newMessage);
+    scrollToBottom();
   };
 
   // Обработчик закрытия соединения
@@ -41,8 +43,21 @@ const connectWebSocket = () => {
   };
 };
 
-// При монтировании компонента подключаемся к WebSocket
-onMounted(() => {
+
+onMounted(async () => {
+  const response = await fetch("http://localhost:4000/api/chat", {
+    method: "POST",
+    credentials: "include", 
+    headers: {
+      'Content-Type': 'application/json', 
+    },
+    body: JSON.stringify({
+      room: 1, 
+    }),
+  });
+  const data = await response.json()
+  messages.value = data
+  
   connectWebSocket();
   scrollToBottom();
 });
@@ -90,7 +105,7 @@ watch(
   margin-bottom: 5px;
   padding: 10px;
   border-radius: 5px;
-  
+
   align-self: end;
 }
 input {
