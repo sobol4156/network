@@ -21,6 +21,14 @@ onActivated(async () => {
   const data = await response.json();
   console.log(data);
   store.changeUser(data)
+
+  const responseSecond= await fetch("http://localhost:4000/auth/allUsers", {
+    method: 'GET',
+    credentials: "include",
+  })
+  const dataUsers = await responseSecond.json()
+  store.changeUsers(dataUsers.users)
+  console.log(dataUsers.users)
 });
 </script>
 

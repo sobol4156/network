@@ -1,9 +1,9 @@
 <template>
   <div class="chats">
     <last-chat
-      v-for="chat in chats"
+      v-for="chat in store.users"
       :chat-user="chat"
-      @click="selectChat(chat.room)"
+      @click="selectChat(chat.id)"
     />
   </div>
 </template>

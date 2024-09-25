@@ -6,6 +6,7 @@ export const useStore = defineStore('store', {
     isAuthorization: false,
     user: {},
     currentRoom: null as null | number,
+    users: []
   }),
   actions: {
     changeAuthorization(value: boolean) {
@@ -16,6 +17,9 @@ export const useStore = defineStore('store', {
     },
     changeCurrentRoom(value: number) {
       this.currentRoom = value
+    },
+    changeUsers(value: []) {
+      this.users = value
     }
   }
 })

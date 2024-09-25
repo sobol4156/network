@@ -9,7 +9,8 @@
     />
 
     <div class="profile-header__user">
-      <span class="profile-header__user-name">{{ store.user.name }}</span>
+      <span v-if="props.rightPart && store.currentRoom" class="profile-header__user-name">{{ store.users[store.currentRoom -1].name }}</span>
+      <span v-else class="profile-header__user-name">{{ store.user.name }}</span>
       <span class="profile-header__user-post">FullStack Developer</span>
     </div>
 
