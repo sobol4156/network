@@ -9,20 +9,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, nextTick, computed } from "vue";
+import { useStore } from "@/stores";
+
+const store = useStore();
 
 const messages = ref([]);
 const messagesContainer = ref(null);
 let socket; // WebSocket объект
 
+const currentRoom = computed(() => {
+  return store.currentRoom
+})
+
+
 // Функция для подключения к WebSocket
-const connectWebSocket = () => {
+const connectWebSocket = (roomId) => {
+  if (socket) {
+    socket.close(); 
+  }
+  
   // Указываем URL WebSocket-сервера
   socket = new WebSocket("ws://localhost:4000");
 
   // Обработчик открытия соединения
   socket.onopen = () => {
-    console.log("Connected to WebSocket server");
+    console.log(`Connected to WebSocket server for room ${roomId}`);
+    socket.send(JSON.stringify({ action: 'join', room: roomId })); 
   };
 
   // Обработчик получения сообщения
@@ -43,7 +56,6 @@ const connectWebSocket = () => {
   };
 };
 
-
 onMounted(async () => {
   const response = await fetch("http://localhost:4000/api/chat", {
     method: "POST",
@@ -52,7 +64,7 @@ onMounted(async () => {
       'Content-Type': 'application/json', 
     },
     body: JSON.stringify({
-      room: 1, 
+      room: currentRoom.value, 
     }),
   });
   const data = await response.json()
@@ -76,11 +88,33 @@ const scrollToBottom = async() => {
   }
 };
 
+watch(
+  currentRoom,
+  async (newRoom) => {
+    if (newRoom !== null) {
+      const response = await fetch("http://localhost:4000/api/chat", {
+        method: "POST",
+        credentials: "include", 
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify({
+          room: newRoom, 
+        }),
+      });
+      
+      const data = await response.json();
+      messages.value = data;
+
+      connectWebSocket(newRoom);
+    }
+  },
+  { immediate: true } 
+);
 
 watch(
   () => messages.value.length,
   () => {
-    console.log(123);
     scrollToBottom();
   }
 );

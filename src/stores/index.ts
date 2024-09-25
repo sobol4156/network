@@ -1,16 +1,11 @@
 
 import { defineStore } from 'pinia'
 
-type User = {
-  name: string,
-  id: number,
-  email:string
-}
-
 export const useStore = defineStore('store', {
   state: () => ({
     isAuthorization: false,
-    user: {}
+    user: {},
+    currentRoom: null as null | number,
   }),
   actions: {
     changeAuthorization(value: boolean) {
@@ -18,6 +13,9 @@ export const useStore = defineStore('store', {
     },
     changeUser(value: object) {
       this.user = value
+    },
+    changeCurrentRoom(value: number) {
+      this.currentRoom = value
     }
   }
 })

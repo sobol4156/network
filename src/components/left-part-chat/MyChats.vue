@@ -1,11 +1,22 @@
 <template>
   <div class="chats">
-    <last-chat v-for="chat in chats" :chat-user="chat" />
+    <last-chat
+      v-for="chat in chats"
+      :chat-user="chat"
+      @click="selectChat(chat.room)"
+    />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import LastChat from "@/components/LastChat.vue";
+import { useStore } from "@/stores";
+
+const store = useStore();
+
+const selectChat = (room: number) => {
+  store.changeCurrentRoom(room);
+};
 
 const chats = [
   {
@@ -14,6 +25,7 @@ const chats = [
     lastMessage: "Hello, like them?",
     time: "9:50",
     unreadMessage: 3,
+    room: 1,
   },
   {
     name: "Igor Vermel",
@@ -21,6 +33,7 @@ const chats = [
     lastMessage: "Yes",
     time: "9:21",
     unreadMessage: 1,
+    room: 2,
   },
   {
     name: "Anatoliy Deriagin",
@@ -28,6 +41,7 @@ const chats = [
     lastMessage: "I don't know",
     time: "7:34",
     unreadMessage: 0,
+    room: 3,
   },
   {
     name: "Maga",
@@ -35,6 +49,7 @@ const chats = [
     lastMessage: "Yes",
     time: "7:21",
     unreadMessage: 0,
+    room: 4,
   },
   {
     name: "Mihail Z",
@@ -42,6 +57,7 @@ const chats = [
     lastMessage: "I don't know",
     time: "7:00",
     unreadMessage: 0,
+    room: 5,
   },
 ];
 </script>

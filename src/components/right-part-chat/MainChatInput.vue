@@ -17,17 +17,21 @@
 import MicrophoneIcon from "@/components/ui/MicrophoneIcon.vue";
 import PaperClipIcon from "@/components/ui/PaperClipIcon.vue";
 import StickerIcon from "@/components/ui/StickerIcon.vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useStore } from "@/stores";
 
 const store = useStore();
+const currentRoom = computed(() => {
+  return store.currentRoom
+})
+
 let socket: WebSocket; // WebSocket объект
 const inputMessage = ref("");
 // Функция для отправки сообщений
 const sendMessage = () => {
   if (inputMessage.value) {
     const objSend = {
-      room: 1,
+      room: currentRoom.value,
       content: inputMessage.value,
       userId: store.user.id,
     };
