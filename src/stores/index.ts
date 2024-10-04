@@ -1,6 +1,12 @@
 
 import { defineStore } from 'pinia'
 
+type User = {
+  name: string,
+  id: number,
+  
+}
+
 export const useStore = defineStore('store', {
   state: () => ({
     isAuthorization: false,

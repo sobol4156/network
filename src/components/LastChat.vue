@@ -2,21 +2,24 @@
   <div class="last-chat">
     <img
       class="last-chat__avatar"
-      :src="props.chatUser.img || 'https://static.wikia.nocookie.net/godmodes/images/5/50/Unknown........jpg/revision/latest?cb=20221114200926'"
+      :src="
+        props.chatUser?.img ||
+        'https://static.wikia.nocookie.net/godmodes/images/5/50/Unknown........jpg/revision/latest?cb=20221114200926'
+      "
       alt="Avatar"
       width="50"
       height="50"
     />
     <div class="last-chat__text">
-      <span class="last-chat__name">{{ props.chatUser.name }}</span>
-      <span class="last-chat__message">{{ props.chatUser.lastMessage }}</span>
+      <span class="last-chat__name">{{ props.chatUser?.name }}</span>
+      <span class="last-chat__message">{{ props.chatUser?.lastMessage }}</span>
     </div>
     <div class="last-chat__info">
-      <span class="last-chat__time">{{ props.chatUser.time }}</span>
+      <span class="last-chat__time">{{ props.chatUser?.time }}</span>
       <span
-        v-if="props.chatUser.unreadMessage !== 0"
+        v-if="props.chatUser?.unreadMessage !== 0"
         class="last-chat__icon-state"
-        >{{ props.chatUser.unreadMessage }}</span
+        >{{ props.chatUser?.unreadMessage }}</span
       >
       <readed-message-icon v-else />
     </div>
@@ -37,6 +40,8 @@ const props = defineProps({
   position: relative;
   padding: 20px;
   cursor: pointer;
+  transition: all 0.2s ease;
+
   &::after {
     position: absolute;
     content: "";
@@ -45,6 +50,9 @@ const props = defineProps({
     height: 5px;
     width: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
+  }
+  &:hover {
+    scale: 1.01;
   }
 
   &__avatar {

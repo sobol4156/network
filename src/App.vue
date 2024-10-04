@@ -8,7 +8,7 @@
         <div class="menu">
           <friends-icon class="menu__item" />
           <call-icon class="menu__item" />
-          <messages-icon class="menu__item" />
+          <messages-icon class="menu__item menu__item--active" />
           <settings-icon class="menu__item" />
         </div>
       </aside>
@@ -43,7 +43,6 @@ import SettingsIcon from "@/components/ui/SettingsIcon.vue";
 const store = useStore();
 const router = useRouter();
 const isAuthorization = ref(store.isAuthorization);
-
 
 onMounted(() => {
   router.push("/login");
@@ -87,6 +86,7 @@ aside {
   height: 650px;
   display: flex;
   width: 100%;
+  background-color: rgba(0, 0, 0, 0.15);
 }
 .menu {
   display: flex;
@@ -98,6 +98,28 @@ aside {
 
   &__item {
     cursor: pointer;
+    transition: scale 0.3s ease;
+
+    &:hover {
+      scale: 1.06;
+
+      * {
+        fill: rgb(255, 255, 255);
+      }
+    }
+    &:active {
+      scale: 1.03;
+      * {
+        fill: rgb(172, 172, 172);
+      }
+    }
+
+    &--active {
+      scale: 1.05;
+      * {
+        fill: rgb(172, 172, 172);
+      }
+    }
   }
 }
 </style>

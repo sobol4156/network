@@ -43,7 +43,7 @@ const sendMessage = () => {
 // Функция для подключения к WebSocket
 const connectWebSocket = () => {
   // Указываем URL WebSocket-сервера
-  socket = new WebSocket("ws://localhost:4000");
+  socket = new WebSocket("ws://localhost:3000");
 
   // Обработчик открытия соединения
   socket.onopen = () => {

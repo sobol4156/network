@@ -12,9 +12,10 @@ import { useStore } from "@/stores";
 
 const store = useStore();
 const router = useRouter();
+const API_URL= import.meta.env.VITE_API_URL
 
 onActivated(async () => {
-  const response = await fetch("http://localhost:4000/auth/profile", {
+  const response = await fetch(`${API_URL}/auth/profile`, {
     method: "GET",
     credentials: "include",
   });
@@ -22,7 +23,7 @@ onActivated(async () => {
   console.log(data);
   store.changeUser(data)
 
-  const responseSecond= await fetch("http://localhost:4000/auth/allUsers", {
+  const responseSecond= await fetch(`${API_URL}/auth/allUsers`, {
     method: 'GET',
     credentials: "include",
   })

@@ -14,7 +14,7 @@ const store = useStore();
 const router = useRouter();
 
 onActivated(async () => {
-  const response = await fetch("http://localhost:4000/auth/profile", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
     method: "GET",
     credentials: "include",
   });

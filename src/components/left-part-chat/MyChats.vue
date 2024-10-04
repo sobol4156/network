@@ -69,6 +69,7 @@ const chats = [
   max-height: 363px;
   overflow-y: auto;
   padding-bottom: 40px;
+  overflow-x: hidden;
 
   scrollbar-width: thin; /* Узкий скроллбар для Firefox */
   scrollbar-color: #8c00ff rgba(0, 0, 0, 0.1);
