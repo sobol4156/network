@@ -17,37 +17,48 @@
 import MicrophoneIcon from "@/components/ui/MicrophoneIcon.vue";
 import PaperClipIcon from "@/components/ui/PaperClipIcon.vue";
 import StickerIcon from "@/components/ui/StickerIcon.vue";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, ref, onBeforeUnmount, onMounted, watch } from "vue";
 import { useStore } from "@/stores";
 
 const store = useStore();
-const currentRoom = computed(() => {
-  return store.currentRoom;
-});
-
-let socket: WebSocket; // WebSocket объект
 const inputMessage = ref("");
+let socket: WebSocket | null = null; // WebSocket объект
+const currentChatUser = computed(() => store.currentChatUser);
+
 // Функция для отправки сообщений
 const sendMessage = () => {
-  if (inputMessage.value) {
+  if (inputMessage.value && socket && socket.readyState === WebSocket.OPEN) {
     const objSend = {
-      room: currentRoom.value,
+      myId: store.user.id,
+      friendUserId: store.currentChatUser.id,
       content: inputMessage.value,
       userId: store.user.id,
     };
     socket.send(JSON.stringify(objSend)); // Отправляем сообщение на сервер
     inputMessage.value = ""; // Очищаем поле ввода
+  } else {
+    console.error("WebSocket не подключён или сообщение пустое");
   }
 };
 
 // Функция для подключения к WebSocket
 const connectWebSocket = () => {
-  // Указываем URL WebSocket-сервера
+  if (socket) {
+    socket.close(); // Закрываем предыдущее соединение, если оно существует
+  }
+
   socket = new WebSocket("ws://localhost:3000");
 
   // Обработчик открытия соединения
   socket.onopen = () => {
     console.log("Connected to WebSocket server");
+  };
+
+  // Обработчик получения сообщения
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log("Сообщение от сервера:", message);
+    // Логика обработки входящих сообщений
   };
 
   // Обработчик закрытия соединения
@@ -61,8 +72,16 @@ const connectWebSocket = () => {
   };
 };
 
+// Подключение к WebSocket при монтировании компонента
 onMounted(() => {
   connectWebSocket();
+});
+
+// Следим за изменением текущего пользователя (чата)
+watch(currentChatUser, () => {
+  if (currentChatUser.value) {
+    connectWebSocket(); // Переподключение при смене чата
+  }
 });
 
 // Перед размонтированием компонента закрываем соединение

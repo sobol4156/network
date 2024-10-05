@@ -1,10 +1,14 @@
 <template>
   <div class="chat-container">
     <div class="messages" ref="messagesContainer">
-      <div 
-        v-for="(message, index) in messages" 
-        :key="index" 
-        :class="['message', message.userId === store.user.id ? 'message-right' : 'message-left']">
+      <div
+        v-for="(message, index) in messages"
+        :key="index"
+        :class="[
+          'message',
+          message.userId === store.user.id ? 'message-right' : 'message-left',
+        ]"
+      >
         <span>{{ message.content }}</span>
       </div>
     </div>
@@ -12,7 +16,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, nextTick, computed } from "vue";
+import {
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  nextTick,
+  computed,
+} from "vue";
 import { useStore } from "@/stores";
 
 const store = useStore();
@@ -21,22 +32,22 @@ const messagesContainer = ref(null); // Контейнер для скролла
 let socket; // WebSocket объект
 
 // Следим за выбранной комнатой
-const currentRoom = computed(() => store.currentRoom);
+const currentUserChat = computed(() => store.currentChatUser);
 
 // Функция для подключения к WebSocket'у
-const connectWebSocket = (roomId) => {
+const connectWebSocket = () => {
   // Закрытие предыдущего WebSocket соединения, если оно есть
   if (socket) socket.close();
-
   socket = new WebSocket("ws://localhost:3000");
-
+  const room = [store.user.id, store.currentChatUser.id].sort().join("-");
   socket.onopen = () => {
-    console.log(`Подключён к WebSocket серверу для комнаты ${roomId}`);
-    socket.send(JSON.stringify({ action: "join", room: roomId }));
+    console.log(`Подключён к WebSocket серверу для комнаты ${room}`);
+    socket.send(JSON.stringify({ action: "join", myId: store.user.id, friendUserId: store.currentChatUser.id }));
   };
 
   socket.onmessage = (event) => {
     const newMessage = JSON.parse(event.data);
+    console.log(newMessage)
     messages.value.push(newMessage); // Добавление нового сообщения в массив
     scrollToBottom(); // Прокрутка вниз после получения нового сообщения
   };
@@ -52,8 +63,8 @@ const connectWebSocket = (roomId) => {
 
 // Подключение к чату при монтировании компонента
 onMounted(async () => {
-  await fetchMessages(currentRoom.value);
-  connectWebSocket(currentRoom.value);
+  await fetchMessages();
+  connectWebSocket([store.user.id, currentChatUser.value.id]);
   scrollToBottom();
 });
 
@@ -63,16 +74,19 @@ onBeforeUnmount(() => {
 });
 
 // Запрос сообщений для выбранной комнаты
-const fetchMessages = async (roomId) => {
+const fetchMessages = async () => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ room: roomId }),
+    body: JSON.stringify({
+      myId: store.user.id,
+      friendUserId: store.currentChatUser.id,
+    }),
   });
-  
+
   const data = await response.json();
   messages.value = data; // Обновляем массив сообщений
 };
@@ -86,17 +100,24 @@ const scrollToBottom = async () => {
 };
 
 // Следим за изменениями в выбранной комнате
-watch(currentRoom, async (newRoom) => {
-  if (newRoom !== null) {
-    await fetchMessages(newRoom);
-    connectWebSocket(newRoom); // Переподключение к WebSocket при смене комнаты
-  }
-}, { immediate: true });
+watch(
+  currentUserChat,
+  async (newRoom) => {
+    if (newRoom !== null) {
+      await fetchMessages();
+      connectWebSocket(newRoom); // Переподключение к WebSocket при смене комнаты
+    }
+  },
+  { immediate: true }
+);
 
 // Следим за изменениями в количестве сообщений и прокручиваем вниз
-watch(() => messages.value.length, () => {
-  scrollToBottom();
-});
+watch(
+  () => messages.value.length,
+  () => {
+    scrollToBottom();
+  }
+);
 </script>
 
 <style scoped lang="scss">
