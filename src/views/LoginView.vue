@@ -15,7 +15,7 @@ const router = useRouter();
 
 onActivated(async () => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
-    method: "GET",
+    method: "POST",
     credentials: "include",
   });
   const data = await response.json();

@@ -22,8 +22,8 @@ import { useStore } from "@/stores";
 
 const store = useStore();
 const currentRoom = computed(() => {
-  return store.currentRoom
-})
+  return store.currentRoom;
+});
 
 let socket: WebSocket; // WebSocket объект
 const inputMessage = ref("");
@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
     font-size: 18px;
     padding: 0 10px;
     margin-left: 10px;
-
+    color: white;
     &:focus::placeholder {
       color: transparent;
     }

@@ -1,14 +1,17 @@
 <template>
   <div class="app">
     <div class="content-app">
-      <aside v-if="store.isAuthorization">
+      <aside >
         <div class="logo">
           <logo-icon />
         </div>
         <div class="menu">
-          <friends-icon class="menu__item" />
+          <friends-icon @click="goFriends" class="menu__item" />
           <call-icon class="menu__item" />
-          <messages-icon class="menu__item menu__item--active" />
+          <messages-icon
+            @click="goMessages"
+            class="menu__item menu__item--active"
+          />
           <settings-icon class="menu__item" />
         </div>
       </aside>
@@ -31,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "./stores";
 import LogoIcon from "@/components/ui/LogoIcon.vue";
@@ -42,10 +45,23 @@ import SettingsIcon from "@/components/ui/SettingsIcon.vue";
 
 const store = useStore();
 const router = useRouter();
-const isAuthorization = ref(store.isAuthorization);
+const isAuthorization = computed(() => {
+  return store.isAuthorization
+})
+
+
+
+const goFriends = () => {
+  router.push('/friends')
+}
+
+const goMessages = () => {
+  router.push('/messages')
+}
 
 onMounted(() => {
   router.push("/login");
+  
 });
 </script>
 

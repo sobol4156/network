@@ -1,6 +1,7 @@
 import MessagesView from '@/views/MessagesView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import FriendsView from '@/views/FriendsView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/friends',
+      name: 'friends',
+      component: FriendsView
     },
   ]
 })

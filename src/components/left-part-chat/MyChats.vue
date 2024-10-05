@@ -3,7 +3,7 @@
     <last-chat
       v-for="chat in store.users"
       :chat-user="chat"
-      @click="selectChat(chat.id)"
+      @click="selectChat(chat)"
     />
   </div>
 </template>
@@ -14,8 +14,9 @@ import { useStore } from "@/stores";
 
 const store = useStore();
 
-const selectChat = (room: number) => {
-  store.changeCurrentRoom(room);
+const selectChat = (chat: object) => {
+  store.changeCurrentRoom(chat.id);
+  store.changeCurrentChatUser(chat)
 };
 
 const chats = [
@@ -66,6 +67,7 @@ const chats = [
 .chats {
   display: flex;
   flex-direction: column;
+  min-height: 363px;
   max-height: 363px;
   overflow-y: auto;
   padding-bottom: 40px;

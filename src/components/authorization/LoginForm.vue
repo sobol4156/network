@@ -37,9 +37,10 @@ const sendData = async() =>{
 
  if(response.data.success){
   store.changeAuthorization(true)
-  router.push('/messages')
+  router.push('/friends')
  }
 }
+
 </script>
 <style scoped lang="scss">
 .login-form {

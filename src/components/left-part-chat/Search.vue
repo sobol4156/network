@@ -21,6 +21,7 @@ import PlusIcon from "@/components/ui/PlusIcon.vue";
   display: flex;
   align-items: center;
   position: relative;
+
   &::after {
     content: "";
     position: absolute;
@@ -36,7 +37,7 @@ import PlusIcon from "@/components/ui/PlusIcon.vue";
     border: none;
     font-size: 18px;
     padding: 0 10px;
-
+    color: white;
     &:focus::placeholder {
       color: transparent;
     }

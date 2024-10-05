@@ -2,7 +2,11 @@
   <div class="profile-header">
     <img
       class="profile-header__avatar"
-      src="https://www.koc.lt/images_mod/animation/background_4.jpg"
+      :src="`${
+        props.rightPart
+          ? 'https://static.wikia.nocookie.net'
+          : 'https://www.koc.lt/images_mod/animation/background_4.jpg'
+      }`"
       alt="Avatar"
       width="50"
       height="50"
@@ -10,17 +14,19 @@
 
     <div class="profile-header__user">
       <span
-        v-if="props.rightPart && store.currentRoom"
+        v-if="props.rightPart"
         class="profile-header__user-name"
-        >{{ store.users[store.currentRoom - 1].name }}</span
+        >{{ store.currentChatUser.name }}</span
       >
       <span v-else class="profile-header__user-name">{{
         store.user.name
       }}</span>
-      <span class="profile-header__user-post">FullStack Developer</span>
+      <span class="profile-header__user-post">{{
+        !props.rightPart ? "FullStack Developer" : ""
+      }}</span>
     </div>
     <div v-if="props.rightPart" class="profile-header__search-icon">
-      <search-icon />
+      <search-icon class="search-icon" />
     </div>
     <div
       :class="[
@@ -46,7 +52,7 @@ import { useStore } from "@/stores";
 import { ref } from "vue";
 
 const store = useStore();
-const isModalVisible = ref(true);
+const isModalVisible = ref(false);
 
 const showModal = () => {
   isModalVisible.value = true;
@@ -149,7 +155,7 @@ const props = defineProps({
   right: 0;
   top: 40px;
   width: 150px;
-  height: 100px;
+  height: 50px;
   border-radius: 5px;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.295);
@@ -169,5 +175,8 @@ const props = defineProps({
       color: #ffdb4d;
     }
   }
+}
+.search-icon{
+  cursor: pointer;
 }
 </style>

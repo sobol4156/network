@@ -12,7 +12,8 @@ export const useStore = defineStore('store', {
     isAuthorization: false,
     user: {},
     currentRoom: null as null | number,
-    users: []
+    users: [],
+    currentChatUser: {},
   }),
   actions: {
     changeAuthorization(value: boolean) {
@@ -26,6 +27,9 @@ export const useStore = defineStore('store', {
     },
     changeUsers(value: []) {
       this.users = value
+    },
+    changeCurrentChatUser(value: object) {
+      this.currentChatUser = value
     }
   }
 })
